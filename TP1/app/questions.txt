@@ -1,0 +1,160 @@
+############################ Question 1 ############################
+
+(a) [] => Délimite la liste
+    :  => Ajouter un élement à la liste
+    ++ => Concaténation de deux listes
+
+(b)
+    1:[2] => Ajoute 1 à la tête de liste : [1,2]
+    — [3,4] ++ [1,2] => Concatène deux listes : [3,4,1,2]
+    — [3..10] => Définie une liste pour les nombre de l'intervalle 3 à 10 : [3,4,5,6,7,8,9,10]
+    — tail [1..4] ++ 5:[] => Affiche toute la liste sans la tête : [2,3,4,5]
+    — head [1..4] : [5] => Prend les têtes des liste, 1er element : [1,5]
+    — reverse [1..4] ++ [5] => Inverse l'ordre de la 1ère liste : [4,3,2,1,5]
+
+############################ Question 2 ############################
+(a)
+    head => Prend une liste et retourne la tête de liste
+    tail => Prend une liste et retourne la queue de liste
+    reverse => Inverse l'ordre de la liste
+    length => Donne le nombre d'élements de la liste
+    drop => Prend une liste et retourne le nombre d'élements préciser en paramètre
+    take => Inverse de drop
+    !! => Récupére l'élément à l'index
+    tails => tails prend une liste et retourne ses queues
+
+(b)
+    (i)
+        l1 = [2,3,4]
+        head (reverse l1)
+    (ii)
+        l1 !! (length l1-1)
+
+     (iii)
+        head (drop (length l1 -1)  l1)
+
+(c)
+    ghci :
+        (i)
+            take (length  l1-1) l1
+        (ii)
+            tail (reverse l1)
+        (iii)
+
+
+############################ Question 3 ############################
+
+Chaine de caractére => liste de caractères
+(a) On teste si le mot est égale au mot inverse (à l'aide la fonction reverse)
+EX :  "kayak" == reverse "kayak"
+
+(b) removeSpace str = [ str | char <- str, str /= ' ']
+
+Ex : removeSpace "k ay ak" == reverse (removeSpace "k ay ak")
+
+(c) isPalindrome word = word  == reverse word
+
+:t isPalindrome
+isPalindrome :: Eq a => [a] -> Bool
+
+La fonction isPalindrome teste la contrainte de classe égalité de a et prend liste de a et retourne un booléan
+
+(d) On réutilise la fonction removeSpace précédente
+isPalindrome str = removeSpace str == reverse (removeSpace str)
+
+############################ Question 4 ############################
+(a)
+
+— [’a’,’b’,’c’],              >>> [Char]
+— [1, 2, 3],                  >>> Num a => [a]
+— [[’a’,’b’],[’c’,’d’]],      >>> [[Char]]
+— [[’1’,’2’],[’3’,’4’]],      >>> [[Char]]
+— (’a’,’b’),                  >>> (Char, Char)
+— (’a’,’b’,’c’),              >>> (Char, Char, Char)
+— (1,2),                      >>> (Num a, Num b) => (a, b)
+— (1,2,3),                    >>> (Num a, Num b) => (a, b)
+— [(False ,’0’),(True ,’1’)], >>> [(Bool, Char)]
+— ([False,True],[’0’,’1’]),   >>> ([Bool], [Char])
+— [tail,init,reverse],        >>> [[a] -> [a]]
+— ([tail,init,reverse],[take,drop]) >>> ([[a1] -> [a1]], [Int -> [a2] -> [a2]])
+
+(b) Une liste ne peut contenir que des éléments du même type, ce qui n'est pas le cas ici, entre head et take :
+
+Le type de head : [a] -> a
+Le type de take : Int -> [a] -> [a]
+
+Ceci fonctionne avec le tuple (head, take) qui peut contenir des types différents, mais pas avec une liste.
+
+############################ Question 5 ############################
+
+(a)
+    Prelude> second xs = head (tail xs)
+    Prelude> :t second
+    second :: [a] -> a
+
+    Prelude> appl (f,x) = f x
+    Prelude> :t appl
+    appl :: (t1 -> t2, t1) -> t2
+
+    Prelude> pair x y  = (x,y)
+    Prelude> :t pair
+    pair :: a -> b -> (a, b)
+
+    Prelude> mult x y = (x,y)
+    Prelude> :t mult
+    mult :: a -> b -> (a, b)
+
+    Prelude> double = mult 2
+    Prelude> :t double
+    double :: Num a => b -> (a, b)
+
+    Prelude> palindrome xs  = reverse xs == xs
+    Prelude> :t palindrome
+    palindrome :: Eq a => [a] -> Bool
+
+    Prelude> twice f x = f (f x)
+    Prelude> :t twice
+    twice :: (t -> t) -> t -> t
+
+    Prelude> incrAll xs = map (+1) xs
+    Prelude> :t incrAll
+    incrAll :: Num b => [b] -> [b]
+
+    Prelude> norme xs = sqrt (sum(map f xs)) where f x = x^2
+    Prelude> :t norme
+    norme :: Floating a => [a] -> a
+
+(b)
+    La fonction appl est une fonction a deux arguments, voici sa forme currifiée :
+        appl f x = f x
+    La fonction pair est une fonction a deux arguments.
+    La fonction mult est une fonction a deux arguments.
+    La fonction twice est une fonction a deux arguments.
+
+
+(c)
+    Fonction d'ordre supérieur : fonctions haskell qui peut prendre d'autres fonction
+    en paramètre et retourner des fonctions en retour.
+
+(d) X
+
+############################ Question 6 ############################
+
+
+
+
+
+
+
+
+############################ Question 7 ############################
+
+
+
+
+
+
+
+############################ Question 8 ############################
+
+

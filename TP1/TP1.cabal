@@ -1,0 +1,62 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 8f0d6e7c1377de2982fd4a59bd17c6a908bf93758bbea665e3a247239b320112
+
+name:           TP1
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/Github username here/TP1#readme>
+homepage:       https://github.com/Github username here/TP1#readme
+bug-reports:    https://github.com/Github username here/TP1/issues
+author:         Author name here
+maintainer:     Author email here
+copyright:      2019 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/Github username here/TP1
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_TP1
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+executable TP1-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_TP1
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      TP1
+    , base >=4.7 && <5
+  default-language: Haskell2010
+
+test-suite TP1-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_TP1
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      TP1
+    , base >=4.7 && <5
+  default-language: Haskell2010
