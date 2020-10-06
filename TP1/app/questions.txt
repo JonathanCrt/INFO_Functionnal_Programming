@@ -136,24 +136,59 @@ Ceci fonctionne avec le tuple (head, take) qui peut contenir des types différen
     Fonction d'ordre supérieur : fonctions haskell qui peut prendre d'autres fonction
     en paramètre et retourner des fonctions en retour.
 
-(d) X
+(d) Correspond à des fonctions qui sont génériques, si elles ont un types ui contient une ou plusieurs variables de types
 
 ############################ Question 6 ############################
 
+(a) >> take 5  [x | x <- [1..], odd x]
+[1,3,5,7,9]
 
+(b) >>   take 5 [x^2 | x  <-  [1..], even x]
+[4,16,36,64,100]
 
+(c) >> [[1..x] | x <- [1..5]]
+[[1],[1,2],[1,2,3],[1,2,3,4],[1,2,3,4,5]]
 
+(d) [(m, n) | n <- [1..20], m <- [x..20], sum [i | i <-[1..x]] == m]
 
+(e)
 
-
+(f)
 
 ############################ Question 7 ############################
 
+(a)
+     >>   countLength [] = 0
+     >>   countLength xs = 1 + length(tail xs)
+     >>   countLength [1, 2, 3]
+     >>   3
+
+(b)
+     >> reverseList [] = []
+     >> reverseList (x:xs) =  reverseList xs ++ [x]
+
+(c)
+    >> listVowel = ['a', 'e', 'i', 'o', 'u', 'y']
+    >> countVowels []  = 0
+    >> countVowels (x:xs)
+    >>      | vowel x       = 1 + countVowels xs
+    >>      | otherwise = countVowels xs
+    >> where
+        vowel x =  x `elem` listVowel
 
 
+(d)
+  >>  mySplitAt pivot xs = (take pivot xs, drop pivot xs)
+  >>  mySplitAt 5 [1..10]
+  >>  ([1,2,3,4,5],[6,7,8,9,10])
+
+(e)
+  >>
+
+(f)
 
 
-
+(g)
 
 ############################ Question 8 ############################
 
