@@ -135,6 +135,7 @@ Ceci fonctionne avec le tuple (head, take) qui peut contenir des types différen
 (c)
     Fonction d'ordre supérieur : fonctions haskell qui peut prendre d'autres fonction
     en paramètre et retourner des fonctions en retour.
+    Les fonctions twice et appl en sont car elle prennent une fonction en paramétre
 
 (d) Correspond à des fonctions qui sont génériques, si elles ont un types ui contient une ou plusieurs variables de types
 
@@ -167,6 +168,12 @@ Ceci fonctionne avec le tuple (head, take) qui peut contenir des types différen
      >> reverseList [] = []
      >> reverseList (x:xs) =  reverseList xs ++ [x]
 
+
+     >> reverseList2  = reverseAux []
+            where
+                reverseAux acc [] =  acc
+                reverseAux acc (x:xs) =  reverseAux (x:acc) xs
+
 (c)
     >> listVowel = ['a', 'e', 'i', 'o', 'u', 'y']
     >> countVowels []  = 0
@@ -183,10 +190,14 @@ Ceci fonctionne avec le tuple (head, take) qui peut contenir des types différen
   >>  ([1,2,3,4,5],[6,7,8,9,10])
 
 (e)
-  >>
+  >> fibonacci.hs
 
 (f)
+  >> oddElements [] = []
+     oddElements (x:xs) = x : (evenElements xs)
 
+  >> eventElements [] = []
+     eventElements (_:xs) = oddElements xs
 
 (g)
 
