@@ -56,10 +56,12 @@ subSeqs (x: xs) = xss ++ map (x:) xss
     where
         xss = subSeqs xs
 
+
 subSeqs' :: (Eq a) => [a] -> [[a]]
 subSeqs' (x:xs) = let ss = subSeqs' xs in ss ++ map (x:) ss
 
 --reversal :: Int -> Int -> [a] -> [a]
+
 
 
 main :: IO ()
