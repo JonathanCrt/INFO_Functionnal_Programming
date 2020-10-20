@@ -3,7 +3,7 @@ module Tree where
 import Data.List as L
 
 import qualified Data.Maybe as Maybe
-
+import qualified Data.Foldable as F
 
 
 data BTree a = Empty | Branch (BTree a) a (BTree a) 
@@ -145,3 +145,69 @@ insertBST Empty v = Branch Empty v Empty
 insertBST (Branch l x r) v
     | v <= x = Branch (insertBST l v) x r
     | otherwise = Branch l x (insertBST r v)
+
+
+--- b 
+searchBST :: (Ord a) => BTree a -> a -> Bool
+searchBST Empty _ = False;
+searchBST (Branch left valueNode right) elt 
+    | valueNode == elt = True
+    | valueNode > elt  =  searchBST left elt -- naviguer a gauche si data > elt
+    | otherwise = searchBST right elt -- naviguer à droit sinon si data < elt
+
+
+--- c 
+deleteLargestBST :: BTree a -> Maybe (a, BTree a)
+deleteLargestBST Empty = Nothing 
+deleteLargestBST (Branch left x Empty) = Just(x, left)
+deleteLargestBST (Branch left x right) = case deleteLargestBST right of 
+    Nothing -> Nothing
+    Just(elt, right') -> Just(elt, Branch left x right')
+
+
+--- d
+--- Si on a trouve l’element que l’on doit supprimer, on peut
+--- aller chercher l’element maximum du sous-arbre gauche pour le mettre a la place
+deleteBST :: (Ord a) => BTree a -> a -> BTree a
+deleteBST Empty _ = Empty 
+deleteBST bst@(Branch Empty x right) y 
+    | x == y    = right
+    | y > x     = Branch Empty x (deleteBST right y)
+    | otherwise = bst 
+deleteBST (Branch left x right) y
+    | x == y    = Branch left' x' right
+    | y < x     = Branch (deleteBST left y) x right
+    | otherwise = Branch left x (deleteBST right y)
+    where 
+        Just (x', left') = deleteLargestBST left
+
+
+--- e 
+deleteBST' :: (Ord a) => BTree a -> a -> Maybe (BTree a)
+deleteBST' Empty _ = Just Empty 
+deleteBST' (Branch Empty x right) y 
+    | x == y    = Just right
+    | y > x     = case deleteBST' right y of
+        Nothing -> Nothing
+        Just right' -> Just (Branch Empty x right')
+    | otherwise = Nothing
+
+deleteBST' (Branch left x right) y
+    | x == y    = Just (Branch left' x' right)
+    | y < x     = case deleteBST' left y of
+        Nothing -> Nothing
+        Just left' -> Just (Branch left' x right)
+    | otherwise = case deleteBST' right y of 
+        Nothing -> Nothing 
+        Just right' -> Just (Branch left x right')
+    where 
+        Just (x', left') = deleteLargestBST left
+
+
+
+---- Q3
+--- Foldable left example 
+mkBST :: (Ord a) => [a] -> BTree a
+mkBST = F.foldl insertBST emptyBT
+
+
