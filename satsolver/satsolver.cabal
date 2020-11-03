@@ -1,0 +1,63 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: ce8e5e483bfa520be2602432370e0890d87b24999af4dc68e0c6756e669478e1
+
+name:           satsolver
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/satsolver#readme>
+homepage:       https://github.com/JonathanCrt/satsolver#readme
+bug-reports:    https://github.com/JonathanCrt/satsolver/issues
+author:         Jonathan CRETE
+maintainer:     jonathan.crete@outlook.fr
+copyright:      2020 Jonathan CRETE
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/JonathanCrt/satsolver
+
+library
+  exposed-modules:
+      Data.Algorithm.SatSolver.Clause
+      Data.Algorithm.SatSolver.Clause.Some
+      Data.Algorithm.SatSolver.Fml
+      Data.Algorithm.SatSolver.Fml.Some
+      Data.Algorithm.SatSolver.Lit
+      Data.Algorithm.SatSolver.Lit.Some
+      Data.Algorithm.SatSolver.Solver
+      Data.Algorithm.SatSolver.Utils
+      Data.Algorithm.SatSolver.Var
+      Data.Algorithm.SatSolver.Var.Some
+  other-modules:
+      Paths_satsolver
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , containers >=0.6
+    , split >=0.2
+  default-language: Haskell2010
+
+test-suite satsolver-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_satsolver
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , containers >=0.6
+    , satsolver
+    , split >=0.2
+  default-language: Haskell2010
