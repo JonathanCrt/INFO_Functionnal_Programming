@@ -48,6 +48,7 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - satsolver
+    - HUnit
 
 library:
   source-dirs: src

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ce8e5e483bfa520be2602432370e0890d87b24999af4dc68e0c6756e669478e1
+-- hash: 4f4cd0563467750fe48d49ece6f831d740dfbc7aed10ee47eeafbc0caa87a373
 
 name:           satsolver
 version:        0.1.0.0
@@ -56,7 +56,8 @@ test-suite satsolver-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      HUnit
+    , base >=4.7 && <5
     , containers >=0.6
     , satsolver
     , split >=0.2

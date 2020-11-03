@@ -7,16 +7,15 @@ module Data.Algorithm.SatSolver.Clause
     fromString,
 
     -- * properties
-
     isEmpty,
     isUnit,
     isMonotone,
-    --isNegMonotone,
-    --isPosMonotone,
+    isNegMonotone,
+    isPosMonotone,
 
     -- * querying
     size,
-    --getVars,
+    getVars,
   )
 where
 
@@ -63,11 +62,13 @@ mk = Clause . L.sort . L.nub
 --  True
 --  >>> let c = mk [Lit.mkNeg' "x1"] in isEmpty c
 --  False
-isEmpty :: Clause a -> Bool
+
  --isEmpty = (Clause listOfLists) = length listOfLists == 0 -- we apply getLits in anything clause
 --isEmpty (Clause lst) = L.null lst -- null prelude
 --isEmpty clause = L.null $ getLits clause --  $ =  application de fonction / on the right first
-isEmpty  = L.null . getLits -- composition
+-- composition
+isEmpty :: Clause a -> Bool
+isEmpty  = L.null . getLits 
 
 -- isEmpty' (Clause lst) = null lst
 
@@ -81,7 +82,7 @@ isEmpty  = L.null . getLits -- composition
 --  >>> let c = mk [Lit.mkNeg' "x1", Lit.mkPos' "x2"] in isUnit c
 --  False
 isUnit :: Clause a -> Bool
-isUnit =  (==) size . 1
+isUnit =  (==) 1 . size
 
 -- | 'isMonotone' @c@ returns true iff clause @c@ is monotone.
 --  A clause is monotone if all literals are either positive
@@ -98,7 +99,7 @@ isUnit =  (==) size . 1
 --  >>> isMonotone $ mk [Lit.mkNeg' "x1", Lit.mkNeg' "x2", Lit.mkNeg' "x3"]
 --  True
 isMonotone :: Clause a -> Bool
-isMonotone = isPosMonotone clause|| isNegMonotone clause
+isMonotone cl = isNegMonotone cl || isPosMonotone cl
 
 -- | 'isNegMonotone' @c@ returns true iff clause @c@ is negative monotone.
 --  A clause is negative monotone if all literals are negative.
@@ -113,13 +114,15 @@ isMonotone = isPosMonotone clause|| isNegMonotone clause
 --  False
 --  >>> isNegMonotone $ mk [Lit.mkNeg' "x1", Lit.mkNeg' "x2", Lit.mkNeg' "x3"]
 --  True
---isNegMonotone :: Clause a -> Bool
-
+isNegMonotone :: Clause a -> Bool
+--isNegMonotone = F.all (False ==) . L.map Lit.toBool . getLits
+isNegMonotone (Clause xs) = F.all (== False)  [(Lit.toBool x) | x <- xs]
 
 -- | 'isPosMonotone' @c@ returns true iff clause @c@ is positive monotone.
 --  A clause is negative monotone if all literals are positive.
 --  An empty clause is positive monotone.
 --
+
 --  >>> import qualified Data.Algorithm.SatSolver.Lit as Lit
 --  >>> isPosMonotone $ mk []
 --  True
@@ -129,8 +132,9 @@ isMonotone = isPosMonotone clause|| isNegMonotone clause
 --  False
 --  >>> isPosMonotone $ mk [Lit.mkNeg' "x1", Lit.mkNeg' "x2", Lit.mkNeg' "x3"]
 --  False
---  isPosMonotone :: Clause a -> Bool
---  To be implemented...
+isPosMonotone :: Clause a -> Bool
+isPosMonotone (Clause xs) = F.all (== True)  [(Lit.toBool x) | x <- xs]
+
 
 -- | 'size' @c@ returns the number of literals in clause @c@.
 --
@@ -144,7 +148,7 @@ isMonotone = isPosMonotone clause|| isNegMonotone clause
 --  >>> let c = mk [Lit.mkPos' i | i <- [1..100]] in size c
 --  100
 size :: Clause a -> Int
-size = L.length . getLits
+size (Clause xs)= L.length xs
 
 -- | 'getVars' @c@ returns the distinct propositional variables that
 --  occur in clause @c@.
@@ -158,8 +162,8 @@ size = L.length . getLits
 --  ["x1","x2","x3"]
 --  >>> let c = mk [Lit.mkPos' "x1", Lit.mkNeg' "x2", Lit.mkNeg' "x1"] in getVars c
 --  ["x1","x2"]
---  getVars :: (Eq a) => Clause a -> [Var.Var a]
---  To be implemented...
+getVars :: (Eq a) => Clause a -> [Var.Var a]
+getVars (Clause xs) = [(Lit.getVar x) | x <- xs] 
 
 -- | 'fromString' @c@ makes a clause from a string.
 --  The first character must be '[' and the last character must be ']'
