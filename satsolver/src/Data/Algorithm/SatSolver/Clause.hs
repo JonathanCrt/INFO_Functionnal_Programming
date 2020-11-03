@@ -66,7 +66,7 @@ mk = Clause . L.sort . L.nub
 isEmpty :: Clause a -> Bool
  --isEmpty = (Clause listOfLists) = length listOfLists == 0 -- we apply getLits in anything clause
 --isEmpty (Clause lst) = L.null lst -- null prelude
---isEmpty clause = L.null $ getLits clause
+--isEmpty clause = L.null $ getLits clause --  $ =  application de fonction / on the right first
 isEmpty  = L.null . getLits -- composition
 
 -- isEmpty' (Clause lst) = null lst
