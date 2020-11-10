@@ -15,7 +15,7 @@ module Data.Algorithm.SatSolver.Clause
 
     -- * querying
     size,
-    getVars,
+    getVars
   )
 where
 

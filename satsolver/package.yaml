@@ -40,15 +40,18 @@ library:
 
 tests:
   satsolver-test:
-    main:                Spec.hs
-    source-dirs:         test
+    main: Spec.hs
+    source-dirs: test
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
-    - satsolver
-    - HUnit
+      - satsolver
+      - tasty
+      - tasty-smallcheck 
+      - tasty-quickcheck 
+      - tasty-hunit
 
 library:
   source-dirs: src

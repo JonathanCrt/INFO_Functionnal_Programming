@@ -7,17 +7,17 @@ module Data.Algorithm.SatSolver.Fml (
 , (/++/)
 
   -- * testing
--- , isEmpty
--- , isSatisfied
--- , hasUnsatisfiedClause
+  , isEmpty
+  , isSatisfied
+  , hasUnsatisfiedClause
 
   -- * querying
--- , getLits
--- , getVars
--- , getUnitClauses
--- , size
--- , selectMostFrequentLit
--- , selectMonotoneLit
+  , getLits
+  , getVars
+  , getUnitClauses
+  , size
+  , selectMostFrequentLit
+  , selectMonotoneLit
 
   -- * Transforming
 -- , toNormal
@@ -65,16 +65,16 @@ where
   --
   -- >>> let f = mk [] in isEmpty f
   -- True
-  -- isEmpty :: Fml a -> Bool
-  -- To be implemented...
+  isEmpty :: Fml a -> Bool
+  isEmpty = L.null . getClauses
 
   -- |'isSatisfied' @f@ returns true if forumla @f@ is satisfied.
   -- This reduces to testing if @f@ contains no clause.
   --
   -- >>> let f = mk [] in isSatisfied f
   -- True
-  -- isSatisfied :: Fml a -> Bool
-  -- To be implemented...
+  isSatisfied :: Fml a -> Bool
+  isSatisfied = isEmpty
 
   -- |'getLits' @f@ returns all literals of formula @f@.
   -- Duplicate are not removed.
@@ -85,8 +85,10 @@ where
   -- [[+"x1",-"x2",-"x3"],[-"x1",-"x2"],[+"x1",+"x2",+"x3"]]
   -- >>> getLits f
   -- [+"x1",-"x2",-"x3",-"x1",-"x2",+"x1",+"x2",+"x3"]
-  -- getLits :: Fml a -> [Lit.Lit a]
-  -- To be implemented...
+  getLits :: Fml a -> [Lit.Lit a]
+  getLits (Fml clauses) = concat xss
+    where
+      xss = map Clause.getLits clauses 
 
   -- |'getVars' @f@ returns the distinct propositional variables of
   -- formula @f@.
@@ -97,8 +99,11 @@ where
   -- [[-"x1",-"x2"],[+"x1",-"x2",-"x3"],[+"x1",+"x2",+"x3"]]
   -- >>> getVars f
   -- ["x1","x2","x3"]
-  -- getVars :: (Ord a) => Fml a -> [Var.Var a]
-  -- To be implemented...
+  getVars :: (Ord a) => Fml a -> [Var.Var a]
+  getVars fml = L.nub xss
+      where 
+        vars = [Clause.getVars x | x <- (getClauses fml)]
+        xss = concat [y | y <- vars]
 
   -- |'getUnitClauses' @f@ returns the unit clauses of formula @f@.
   --
@@ -108,8 +113,8 @@ where
   -- [[+"x1"],[-"x1",+"x2"],[-"x2"]]
   -- >>> getUnitClauses f
   -- [[+"x1"],[-"x2"]]
-  -- getUnitClauses :: (Ord a) => Fml a -> [Clause.Clause a]
-  -- To be implemented...
+  getUnitClauses :: (Ord a) => Fml a -> [Clause.Clause a]
+  getUnitClauses = L.filter Clause.isUnit . getClauses
 
   -- |'selectMostFrequentLit' @f@ returns the most frequent variable of formula @f@.
   -- The number of occurrences of a variable is the number of occurrences of the
@@ -121,8 +126,17 @@ where
   -- [[-"x4",+"x5"],[+"x1",+"x3",-"x4"],[-"x1",+"x5"],[+"x1",+"x2"],[+"x1",-"x3"]]
   -- >>> Fml.selectMostFrequentLit f
   -- Just +"x1"
-  -- selectMostFrequentLit :: (Ord a) => Fml a -> Maybe (Lit.Lit a)
-  -- To be implemented...
+  selectMostFrequentLit :: (Ord a) => Fml a -> Maybe (Lit.Lit a)
+  --selectMostFrequentLit fml = (L.sortOn second . map (\x -> (head x, length x))) xss
+  selectMostFrequentLit fml = select sortedLits
+      where 
+        lits = L.group $ L.sort $ getLits fml
+        sortedLits = L.sortOn T.snd . map (\x -> (L.head x, L.length x)) $ lits -- read at right
+        select value
+          -- empty list
+          | length value == 0 = Nothing
+          -- list not empty  
+          | otherwise = Just . T.fst $ L.last value
 
   -- |'selectMonotoneLit' @f@ returns (if any) a literal that occurs only negatively or
   -- only positively in formula @f@.
@@ -137,8 +151,10 @@ where
   -- [[+1,+2],[-1,+3],[+1,+3],[-3,+4],[-2,-4]]
   -- >>> selectMonotoneLit f'
   -- Nothing
-  -- selectMonotoneLit :: (Ord a) => Fml a -> Maybe (Lit.Lit a)
-  -- To be implemented...
+  selectMonotoneLit :: (Ord a) => Fml a -> Maybe (Lit.Lit a)
+  selectMonotoneLit formula = listToMaybe [x | x <- xss, Lit.neg x `notElem` xss]
+    where
+      xss = L.nub $ getLits formula
 
   -- |'hasUnsatisfiedClause' @f@ returns true if formula @f@ contains
   -- at least one empty clause.
@@ -155,8 +171,8 @@ where
   -- [[+"x1",-"x2",-"x3"],[-"x1",-"x2"],[+"x1",+"x2",+"x3"]]
   -- >>> hasUnsatisfiedClause f'
   -- False
-  -- hasUnsatisfiedClause :: Fml a -> Bool
-  -- To be implemented...
+  hasUnsatisfiedClause :: Fml a -> Bool
+  hasUnsatisfiedClause = F.any Clause.isEmpty . getClauses
 
   -- |'size' @f@ returns the number of clauses (including empty clauses)
   -- in forumla @f@.
@@ -167,8 +183,8 @@ where
   -- [[-"x4",+"x5"],[+"x1",+"x3",-"x4"],[-"x1",+"x5"],[+"x1",+"x2"],[+"x1",-"x3"]]
   -- >>> size f
   -- 5
-  -- size :: Fml a -> Int
-  -- To be implemented...
+  size :: Fml a -> Int
+  size = L.length . getClauses
 
   -- |Union of two formulae.
   --
